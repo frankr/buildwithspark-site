@@ -681,46 +681,37 @@ Most agents close 2-3 extra deals in the first 6 months.
 
 ### Framework & Stack
 
-- **Framework:** Next.js 14+ with App Router
-- **Styling:** Tailwind CSS
+- **Framework:** Static HTML (no framework needed for landing pages)
+- **Styling:** Tailwind CSS (via CDN or build)
+- **Interactivity:** Alpine.js (lightweight, for mobile menu/dropdowns)
 - **Fonts:** Google Fonts (Plus Jakarta Sans, Inter)
-- **Icons:** Heroicons or Lucide React
-- **Deployment:** Vercel (recommended)
+- **Icons:** Heroicons (SVG) or Lucide (CDN)
+- **Deployment:** Vercel, Netlify, GitHub Pages, or any static host (all free)
+
+### Why This Stack?
+
+- ✅ No npm install nightmares
+- ✅ Builds instantly
+- ✅ Deploys anywhere for free
+- ✅ Faster page loads (no JS framework overhead)
+- ✅ Easy to edit and maintain
+- ✅ SEO-friendly out of the box
 
 ### Project Structure
 
 ```
-src/
-├── app/
-│   ├── layout.tsx          # Root layout with fonts
-│   ├── page.tsx            # Homepage
-│   ├── realestate/
-│   │   └── page.tsx        # Real estate landing page
-│   └── globals.css         # Global styles + Tailwind
-├── components/
-│   ├── ui/                 # Reusable UI components
-│   │   ├── Button.tsx
-│   │   ├── Card.tsx
-│   │   ├── Input.tsx
-│   │   └── ...
-│   ├── layout/
-│   │   ├── Header.tsx
-│   │   ├── Footer.tsx
-│   │   └── Navigation.tsx
-│   ├── sections/           # Page sections
-│   │   ├── Hero.tsx
-│   │   ├── Features.tsx
-│   │   ├── Pricing.tsx
-│   │   ├── FAQ.tsx
-│   │   ├── Testimonials.tsx
-│   │   └── CTA.tsx
-│   └── forms/
-│       └── ContactForm.tsx
-├── lib/
-│   └── utils.ts            # Utility functions
-└── public/
-    ├── images/
-    └── favicon.ico
+buildwithspark-site/
+├── index.html              # Homepage
+├── realestate.html         # Real estate landing page
+├── css/
+│   └── styles.css          # Custom styles (if needed beyond Tailwind)
+├── js/
+│   └── main.js             # Alpine.js components, form handling
+├── images/
+│   ├── logo.svg
+│   ├── hero-mockup.png
+│   └── ...
+└── favicon.ico
 ```
 
 ### Responsive Breakpoints
