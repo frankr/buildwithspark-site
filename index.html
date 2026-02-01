@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build with Spark — AI Assistants That Actually Work</title>
+    <meta name="description" content="Handles leads, schedules meetings, updates your CRM — and remembers every conversation.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: '#FFF7ED',
+                100: '#FFEDD5',
+                400: '#FB923C',
+                500: '#E85D04',
+                600: '#D45203',
+                700: '#B84602',
+              },
+              secondary: {
+                100: '#E2E8F0',
+                800: '#1E3A5F',
+                900: '#1A365D',
+              },
+            },
+            fontFamily: {
+              heading: ['Plus Jakarta Sans', 'sans-serif'],
+              body: ['Inter', 'sans-serif'],
+            },
+          },
+        },
+      }
+    </script>
+
+    <style>
+      body {
+        background-color: #FFFAF5;
+      }
+    </style>
+</head>
+<body class="font-body text-secondary-800">
+
+    <!-- Header -->
+    <header x-data="{ open: false }" class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
+            <div class="flex items-center justify-between h-20">
+                <a href="index.html" class="text-2xl font-heading font-bold text-secondary-900">✨ Build with Spark</a>
+                
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#pricing" class="text-gray-600 hover:text-primary-500">Pricing</a>
+                    <a href="realestate.html" class="text-gray-600 hover:text-primary-500">For Real Estate</a>
+                    <a href="#contact" class="text-gray-600 hover:text-primary-500">Contact</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button @click="open = !open" class="text-secondary-900 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path :class="{'hidden': open, 'inline-flex': !open }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            <path :class="{'hidden': !open, 'inline-flex': open }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div x-show="open" class="md:hidden" @click.away="open = false">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#pricing" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-500 hover:bg-primary-50">Pricing</a>
+                <a href="realestate.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-500 hover:bg-primary-50">For Real Estate</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-500 hover:bg-primary-50">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="pt-32 pb-20 px-4 md:px-8 lg:px-16">
+            <div class="max-w-7xl mx-auto text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold font-heading text-secondary-900">Your AI Assistant Who Actually Feels Like Part of Your Team</h1>
+                <p class="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-secondary-800">Handles leads, schedules meetings, updates your CRM — and remembers every conversation.</p>
+                <div class="mt-8 flex justify-center gap-4 flex-wrap">
+                    <a href="#" class="bg-primary-500 hover:bg-primary-600 text-white px-8 py-4 rounded-lg font-semibold transition-colors">Meet Your Assistant</a>
+                    <a href="#" class="border-2 border-primary-500 text-primary-500 hover:bg-primary-50 px-8 py-4 rounded-lg font-semibold transition-colors">See How It Works</a>
+                </div>
+                <div class="mt-12 mx-auto max-w-4xl h-96 bg-secondary-100 rounded-lg shadow-lg flex items-center justify-center">
+                    <p class="text-secondary-800">Product Mockup Placeholder</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Problem Section -->
+        <section class="py-20 px-4 md:px-8 lg:px-16 bg-white">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold font-heading text-secondary-900">Still Chasing Leads at 11pm?</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg">You're losing business in the hours you're not working.</p>
+                </div>
+                <div class="mt-12 grid gap-8 md:grid-cols-3">
+                    <div class="p-8 bg-primary-50 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-xl font-bold font-heading text-secondary-900">Slow Follow-Up Loses Deals</h3>
+                        <p class="mt-2 text-secondary-800">Respond in 5 minutes or lose them forever. Your Spark assistant responds in under 60 seconds, 24/7.</p>
+                    </div>
+                    <div class="p-8 bg-primary-50 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-xl font-bold font-heading text-secondary-900">Human VAs Cost a Fortune</h3>
+                        <p class="mt-2 text-secondary-800">$1,500-3,500/month for quality help that still only works 8 hours a day. Our assistants start at $299/month.</p>
+                    </div>
+                    <div class="p-8 bg-primary-50 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-xl font-bold font-heading text-secondary-900">Chatbots Feel Like Chatbots</h3>
+                        <p class="mt-2 text-secondary-800">Scripted responses. No memory. No personality. They frustrate users and require constant maintenance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Solution Section -->
+        <section class="py-20 px-4 md:px-8 lg:px-16">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold font-heading text-secondary-900">Not a Chatbot. An Actual Assistant.</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-lg">We've built the AI assistant you've always wanted.</p>
+                </div>
+                <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    <!-- Feature 1 -->
+                    <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-lg font-bold font-heading text-secondary-900">Real Memory</h3>
+                        <p class="mt-2 text-secondary-800">Remembers every conversation, just like a human, for seamless follow-up.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-lg font-bold font-heading text-secondary-900">Own Email Address</h3>
+                        <p class="mt-2 text-secondary-800">Gets a real email at your domain (e.g., assistant@yourbiz.com).</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-lg font-bold font-heading text-secondary-900">Available 24/7</h3>
+                        <p class="mt-2 text-secondary-800">Never takes a day off, never sleeps. Always ready to engage a new lead.</p>
+                    </div>
+                    <!-- Feature 4 -->
+                    <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-lg font-bold font-heading text-secondary-900">Real Personality</h3>
+                        <p class="mt-2 text-secondary-800">Not robotic or scripted. We tailor the personality to match your brand voice.</p>
+                    </div>
+                    <!-- Feature 5 -->
+                    <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-lg font-bold font-heading text-secondary-900">Full Integrations</h3>
+                        <p class="mt-2 text-secondary-800">Connects to your CRM, calendar, email, and other essential tools.</p>
+                    </div>
+                    <!-- Feature 6 -->
+                    <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-lg font-bold font-heading text-secondary-900">Indistinguishable</h3>
+                        <p class="mt-2 text-secondary-800">87% of leads thought they were talking to a human in our beta tests.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="py-20 px-4 md:px-8 lg:px-16 bg-white">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold font-heading text-secondary-900">Up and Running in 24 Hours</h2>
+                </div>
+                <div class="mt-12 grid md:grid-cols-3 gap-12 text-center">
+                    <div>
+                        <div class="text-4xl font-bold font-heading text-primary-500">1.</div>
+                        <h3 class="mt-4 text-xl font-bold font-heading">Tell Us About Your Business</h3>
+                        <p class="mt-2 text-secondary-800">A 30-minute onboarding call is all we need to understand your goals, brand voice, and workflows.</p>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold font-heading text-primary-500">2.</div>
+                        <h3 class="mt-4 text-xl font-bold font-heading">We Build Your Assistant</h3>
+                        <p class="mt-2 text-secondary-800">We create a custom personality, set up integrations, and define the exact workflows you need.</p>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold font-heading text-primary-500">3.</div>
+                        <h3 class="mt-4 text-xl font-bold font-heading">Start Delegating</h3>
+                        <p class="mt-2 text-secondary-800">Your new assistant starts handling leads, scheduling meetings, and updating your CRM while you sleep.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="py-20 px-4 md:px-8 lg:px-16">
+            <div class="max-w-7xl mx-auto text-center">
+                <h2 class="text-3xl md:text-4xl font-bold font-heading text-secondary-900">Simple, Transparent Pricing</h2>
+                <p class="mt-4 max-w-2xl mx-auto text-lg">One plan, everything you need.</p>
+                <div class="mt-12 max-w-md mx-auto bg-white rounded-xl shadow-lg p-10 border border-primary-100">
+                    <h3 class="text-2xl font-bold font-heading">Spark Assistant</h3>
+                    <p class="mt-4 text-5xl font-extrabold font-heading text-secondary-900">$299<span class="text-lg font-medium text-gray-500">/month</span></p>
+                    <p class="mt-4 text-gray-600">No hidden fees. No long-term contracts.</p>
+                    <ul class="mt-8 space-y-4 text-left">
+                        <li class="flex items-center">
+                            <svg class="h-6 w-6 text-primary-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                            24/7 Availability
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="h-6 w-6 text-primary-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                            Dedicated Email Address
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="h-6 w-6 text-primary-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                            CRM & Calendar Integration
+                        </li>
+                         <li class="flex items-center">
+                            <svg class="h-6 w-6 text-primary-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                            Custom Personality & Workflows
+                        </li>
+                    </ul>
+                    <a href="#" class="mt-10 block w-full bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">Get Started</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="py-20 px-4 md:px-8 lg:px-16 bg-white">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center">
+                    <h2 class="text-3xl md:text-4xl font-bold font-heading text-secondary-900">Questions? We've Got Answers.</h2>
+                </div>
+                <div class="mt-12 max-w-3xl mx-auto space-y-4">
+                    <div x-data="{ open: false }" class="bg-primary-50 rounded-lg">
+                        <button @click="open = !open" class="w-full flex justify-between items-center text-left p-6">
+                            <span class="text-lg font-semibold font-heading text-secondary-900">Is it really AI or a human?</span>
+                            <svg class="h-6 w-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div x-show="open" x-collapse class="p-6 pt-0">
+                            <p class="text-secondary-800">It's 100% AI, but it's designed to be completely indistinguishable from a human assistant. It has memory, a custom personality, and can handle complex, multi-step conversations.</p>
+                        </div>
+                    </div>
+                    <div x-data="{ open: false }" class="bg-primary-50 rounded-lg">
+                        <button @click="open = !open" class="w-full flex justify-between items-center text-left p-6">
+                            <span class="text-lg font-semibold font-heading text-secondary-900">How is this different from a chatbot?</span>
+                             <svg class="h-6 w-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div x-show="open" x-collapse class="p-6 pt-0">
+                            <p class="text-secondary-800">Chatbots are based on rigid scripts and decision trees. Our assistants are powered by advanced AI that can understand context, remember past interactions, and make intelligent decisions. Plus, they operate from a real email address, not a website widget.</p>
+                        </div>
+                    </div>
+                     <div x-data="{ open: false }" class="bg-primary-50 rounded-lg">
+                        <button @click="open = !open" class="w-full flex justify-between items-center text-left p-6">
+                            <span class="text-lg font-semibold font-heading text-secondary-900">What if my clients realize it's AI?</span>
+                             <svg class="h-6 w-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div x-show="open" x-collapse class="p-6 pt-0">
+                            <p class="text-secondary-800">In our extensive testing, 87% of people believed they were interacting with a human. The experience is designed to be so seamless and natural that it's a non-issue. The goal is efficiency and great service, and that's what clients experience.</p>
+                        </div>
+                    </div>
+                    <div x-data="{ open: false }" class="bg-primary-50 rounded-lg">
+                        <button @click="open = !open" class="w-full flex justify-between items-center text-left p-6">
+                            <span class="text-lg font-semibold font-heading text-secondary-900">How long to get started?</span>
+                             <svg class="h-6 w-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div x-show="open" x-collapse class="p-6 pt-0">
+                            <p class="text-secondary-800">Typically between 24-48 hours. After our 30-minute onboarding call, our team gets to work building and testing your assistant. We'll notify you the moment it's ready to go live.</p>
+                        </div>
+                    </div>
+                     <div x-data="{ open: false }" class="bg-primary-50 rounded-lg">
+                        <button @click="open = !open" class="w-full flex justify-between items-center text-left p-6">
+                            <span class="text-lg font-semibold font-heading text-secondary-900">Can I customize the personality?</span>
+                             <svg class="h-6 w-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div x-show="open" x-collapse class="p-6 pt-0">
+                            <p class="text-secondary-800">Yes, completely. During onboarding, we'll define the exact tone you're looking for—whether it's professional and concise, friendly and bubbly, or somewhere in between. We match it to your brand.</p>
+                        </div>
+                    </div>
+                     <div x-data="{ open: false }" class="bg-primary-50 rounded-lg">
+                        <button @click="open = !open" class="w-full flex justify-between items-center text-left p-6">
+                            <span class="text-lg font-semibold font-heading text-secondary-900">What happens if something goes wrong?</span>
+                             <svg class="h-6 w-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div x-show="open" x-collapse class="p-6 pt-0">
+                            <p class="text-secondary-800">We have robust human escalation protocols. If the assistant is ever confused or encounters a request outside its scope, it will immediately loop in a designated human team member to take over the conversation seamlessly.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section id="contact" class="py-20 px-4 md:px-8 lg:px-16">
+            <div class="max-w-7xl mx-auto text-center">
+                 <h2 class="text-3xl md:text-4xl font-bold font-heading text-secondary-900">Ready to Stop Missing Leads?</h2>
+                 <p class="mt-4 max-w-2xl mx-auto text-lg">Your AI assistant is one call away.</p>
+                 <div class="mt-8">
+                     <a href="#" class="bg-primary-500 hover:bg-primary-600 text-white px-10 py-5 rounded-lg font-semibold text-lg transition-colors">Get Started Today</a>
+                 </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-secondary-900 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 md:px-8 lg:px-16">
+            <div class="md:flex md:justify-between">
+                <div class="mb-6 md:mb-0">
+                     <a href="index.html" class="text-2xl font-heading font-bold">✨ Build with Spark</a>
+                     <p class="mt-2 text-secondary-100">AI assistants that actually work.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+                    <div>
+                        <h2 class="mb-6 text-sm font-semibold text-gray-400 uppercase">Company</h2>
+                        <ul class="text-gray-300">
+                            <li class="mb-4"><a href="index.html" class="hover:underline">Home</a></li>
+                            <li><a href="realestate.html" class="hover:underline">Real Estate</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2 class="mb-6 text-sm font-semibold text-gray-400 uppercase">Resources</h2>
+                        <ul class="text-gray-300">
+                            <li class="mb-4"><a href="#pricing" class="hover:underline">Pricing</a></li>
+                            <li><a href="#contact" class="hover:underline">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-6 border-gray-700 sm:mx-auto lg:my-8" />
+            <div class="text-center text-gray-400">
+                <p>&copy; 2026 Build with Spark. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
