@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Build with Spark — AI Assistants That Actually Work</title>
-    <meta name="description" content="Handles leads, schedules meetings, updates your CRM — and remembers every conversation.">
+    <title>Build with Spark — Clone Yourself with AI</title>
+    <meta name="description" content="Not a chatbot. An AI assistant with memory, personality, and its own email address. Responds in 60 seconds, remembers everything, never drops a lead.">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -21,23 +21,48 @@
         theme: {
           extend: {
             colors: {
-              primary: {
+              spark: {
                 50: '#FFF7ED',
                 100: '#FFEDD5',
+                200: '#FED7AA',
+                300: '#FDBA74',
                 400: '#FB923C',
                 500: '#E85D04',
                 600: '#D45203',
                 700: '#B84602',
               },
-              secondary: {
-                100: '#E2E8F0',
-                800: '#1E3A5F',
-                900: '#1A365D',
+              navy: {
+                50: '#f0f4f8',
+                100: '#d9e2ec',
+                200: '#bcccdc',
+                300: '#9fb3c8',
+                400: '#829ab1',
+                500: '#627d98',
+                600: '#486581',
+                700: '#334e68',
+                800: '#243b53',
+                900: '#102a43',
+                950: '#0a1929',
               },
             },
             fontFamily: {
               heading: ['Plus Jakarta Sans', 'sans-serif'],
               body: ['Inter', 'sans-serif'],
+            },
+            animation: {
+              'float': 'float 6s ease-in-out infinite',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'gradient': 'gradient 8s ease infinite',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-20px)' },
+              },
+              gradient: {
+                '0%, 100%': { backgroundPosition: '0% 50%' },
+                '50%': { backgroundPosition: '100% 50%' },
+              },
             },
           },
         },
@@ -45,291 +70,716 @@
     </script>
 
     <style>
-      body {
-        background-color: #FFFAF5;
+      html { scroll-behavior: smooth; }
+      body { background-color: #fafafa; }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #E85D04 0%, #FB923C 50%, #E85D04 100%);
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradient 4s ease infinite;
       }
+
+      .glow-orange {
+        box-shadow: 0 0 60px rgba(232, 93, 4, 0.3), 0 0 100px rgba(232, 93, 4, 0.1);
+      }
+
+      .glow-soft {
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03);
+      }
+
+      .card-hover {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .card-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(232, 93, 4, 0.1);
+      }
+
+      .hero-gradient {
+        background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(232, 93, 4, 0.15), transparent);
+      }
+
+      .grid-pattern {
+        background-image: 
+          linear-gradient(rgba(232, 93, 4, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(232, 93, 4, 0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+      }
+
+      .section-dark {
+        background: linear-gradient(180deg, #102a43 0%, #0a1929 100%);
+      }
+
+      .text-balance { text-wrap: balance; }
     </style>
 </head>
-<body class="font-body text-secondary-800">
+<body class="font-body text-navy-800 antialiased">
 
     <!-- Header -->
-    <header x-data="{ open: false }" class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50">
-        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
-            <div class="flex items-center justify-between h-20">
-                <a href="index.html" class="text-2xl font-heading font-bold text-secondary-900">✨ Build with Spark</a>
+    <header x-data="{ open: false, scrolled: false }" 
+            @scroll.window="scrolled = window.pageYOffset > 20"
+            :class="scrolled ? 'bg-white/80 backdrop-blur-xl shadow-sm' : 'bg-transparent'"
+            class="fixed top-0 w-full z-50 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <span class="text-2xl">✨</span>
+                    <span class="text-xl font-heading font-bold text-navy-900 group-hover:text-spark-500 transition-colors">Spark</span>
+                </a>
                 
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#pricing" class="text-gray-600 hover:text-primary-500">Pricing</a>
-                    <a href="realestate.html" class="text-gray-600 hover:text-primary-500">For Real Estate</a>
-                    <a href="#contact" class="text-gray-600 hover:text-primary-500">Contact</a>
+                <nav class="hidden md:flex items-center gap-8">
+                    <a href="#how-it-works" class="text-sm font-medium text-navy-600 hover:text-spark-500 transition-colors">How It Works</a>
+                    <a href="#pricing" class="text-sm font-medium text-navy-600 hover:text-spark-500 transition-colors">Pricing</a>
+                    <a href="realestate.html" class="text-sm font-medium text-navy-600 hover:text-spark-500 transition-colors">Real Estate</a>
+                    <a href="#contact" class="inline-flex items-center gap-2 bg-navy-900 hover:bg-navy-800 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-all hover:shadow-lg">
+                        Get Started
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
                 </nav>
 
-                <!-- Mobile Menu Button -->
-                <div class="md:hidden">
-                    <button @click="open = !open" class="text-secondary-900 focus:outline-none">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path :class="{'hidden': open, 'inline-flex': !open }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                            <path :class="{'hidden': !open, 'inline-flex': open }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
+                <button @click="open = !open" class="md:hidden p-2 text-navy-900">
+                    <svg x-show="!open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                    <svg x-show="open" x-cloak class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
             </div>
         </div>
-        <!-- Mobile Menu -->
-        <div x-show="open" class="md:hidden" @click.away="open = false">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#pricing" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-500 hover:bg-primary-50">Pricing</a>
-                <a href="realestate.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-500 hover:bg-primary-50">For Real Estate</a>
-                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-500 hover:bg-primary-50">Contact</a>
+
+        <div x-show="open" x-cloak x-transition class="md:hidden bg-white border-t border-navy-100">
+            <div class="px-6 py-4 space-y-3">
+                <a href="#how-it-works" @click="open = false" class="block py-2 text-navy-700 font-medium">How It Works</a>
+                <a href="#pricing" @click="open = false" class="block py-2 text-navy-700 font-medium">Pricing</a>
+                <a href="realestate.html" class="block py-2 text-navy-700 font-medium">Real Estate</a>
+                <a href="#contact" @click="open = false" class="block mt-4 text-center bg-navy-900 text-white py-3 rounded-xl font-semibold">Get Started</a>
             </div>
         </div>
     </header>
 
     <main>
         <!-- Hero Section -->
-        <section class="pt-32 pb-20 px-4 md:px-8 lg:px-16">
-            <div class="max-w-7xl mx-auto text-center">
-                <h1 class="text-4xl md:text-6xl font-extrabold font-heading text-secondary-900">Your AI Assistant Who Actually Feels Like Part of Your Team</h1>
-                <p class="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-secondary-800">Handles leads, schedules meetings, updates your CRM — and remembers every conversation.</p>
-                <div class="mt-8 flex justify-center gap-4 flex-wrap">
-                    <a href="#" class="bg-primary-500 hover:bg-primary-600 text-white px-8 py-4 rounded-lg font-semibold transition-colors">Meet Your Assistant</a>
-                    <a href="#" class="border-2 border-primary-500 text-primary-500 hover:bg-primary-50 px-8 py-4 rounded-lg font-semibold transition-colors">See How It Works</a>
-                </div>
-                <div class="mt-12 mx-auto max-w-4xl h-96 bg-secondary-100 rounded-lg shadow-lg flex items-center justify-center">
-                    <p class="text-secondary-800">Product Mockup Placeholder</p>
+        <section class="relative min-h-screen flex items-center hero-gradient grid-pattern overflow-hidden">
+            <div class="absolute top-1/4 left-10 w-72 h-72 bg-spark-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
+            <div class="absolute bottom-1/4 right-10 w-96 h-96 bg-spark-400/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+            
+            <div class="relative max-w-7xl mx-auto px-6 pt-28 pb-16 md:pt-32 md:pb-24">
+                <!-- Two-column layout: stacked on mobile, side-by-side on desktop -->
+                <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                    
+                    <!-- Left column: Text content -->
+                    <div class="text-center lg:text-left">
+                        <!-- Badge -->
+                        <div class="inline-flex items-center gap-2 bg-navy-900 text-white rounded-full px-4 py-1.5 mb-8">
+                            <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                            <span class="text-white font-medium">Open for early access</span>
+                        </div>
+
+                        <!-- Headline -->
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-heading font-extrabold text-navy-900 tracking-tight text-balance">
+                            What if you could<br>
+                            <span class="gradient-text">clone yourself?</span>
+                        </h1>
+
+                        <!-- Subheadline - Sharp, specific -->
+                        <p class="mt-6 text-lg md:text-xl text-navy-700 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                            An AI assistant with <strong>real memory</strong>, <strong>real personality</strong>, and <strong>its own email address</strong>. Responds in 60 seconds. Remembers every conversation. Never drops a lead.
+                        </p>
+
+                        <!-- Key differentiator callout -->
+                        <div class="mt-8 inline-flex items-center gap-3 bg-spark-50 border border-spark-200 rounded-xl px-5 py-3">
+                            <div class="flex items-center justify-center w-10 h-10 bg-spark-500 rounded-lg text-white">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            </div>
+                            <span class="text-navy-800 font-medium">Gets a real email like <span class="font-mono text-spark-600">assistant@yourbusiness.com</span></span>
+                        </div>
+
+                        <!-- CTAs -->
+                        <div class="mt-10 flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
+                            <a href="#contact" class="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-spark-500 hover:bg-spark-600 text-white font-semibold px-8 py-4 rounded-xl transition-all hover:shadow-xl hover:shadow-spark-500/25 hover:-translate-y-0.5">
+                                Meet your clone
+                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            </a>
+                            <a href="#how-it-works" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-navy-50 text-navy-900 font-semibold px-8 py-4 rounded-xl border border-navy-200 transition-all hover:border-navy-300">
+                                See it in action
+                            </a>
+                        </div>
+
+                        <!-- Social Proof - Specific, credible -->
+                        <div class="mt-10 flex flex-col items-center lg:items-start gap-3">
+                            <div class="flex items-center gap-3 text-sm">
+                                <span class="inline-flex items-center gap-1.5 bg-emerald-100 text-emerald-800 font-semibold px-3 py-1 rounded-full">
+                                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                                    87% thought it was human
+                                </span>
+                                <span class="text-navy-400">in beta tests</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right column: Product Preview -->
+                    <div class="relative">
+                        <div class="relative rounded-2xl overflow-hidden glow-orange animate-float" style="animation-duration: 8s;">
+                            <div class="bg-gradient-to-br from-navy-900 to-navy-950 rounded-2xl p-1">
+                                <div class="bg-navy-900 rounded-xl overflow-hidden">
+                                    <!-- Email client chrome - Shows it's a REAL EMAIL -->
+                                    <div class="flex items-center gap-2 px-4 py-3 bg-navy-800/50 border-b border-navy-700/50">
+                                        <div class="flex gap-1.5">
+                                            <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                                            <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                                            <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                                        </div>
+                                        <div class="flex-1 mx-4">
+                                            <div class="bg-navy-700/50 rounded-md px-3 py-1.5 text-sm text-navy-300 text-center font-mono">
+                                                inbox — alex@acmerealty.com
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Email thread showing memory -->
+                                    <div class="p-5 space-y-4">
+                                        <!-- Email header -->
+                                        <div class="flex items-start justify-between border-b border-navy-700/50 pb-4">
+                                            <div>
+                                                <div class="flex items-center gap-2">
+                                                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-spark-400 to-spark-600 flex items-center justify-center text-white text-sm font-bold">S</div>
+                                                    <div>
+                                                        <p class="text-white font-medium text-sm">Sarah (Your Spark Assistant)</p>
+                                                        <p class="text-navy-400 text-xs font-mono">sarah@acmerealty.com</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span class="text-navy-500 text-xs">2 min ago</span>
+                                        </div>
+                                        
+                                        <!-- Email content showing MEMORY -->
+                                        <div class="text-navy-200 space-y-3 text-sm">
+                                            <p>Hi Mike,</p>
+                                            <p>Great chatting with you again! <span class="text-spark-400 font-medium">Since we last talked in December, I've been keeping an eye out for 3-bed homes in Westside under $600K like you mentioned.</span></p>
+                                            <p>A new listing just hit the market this morning that checks all your boxes — 742 Oak Street, 3bd/2ba, $589K, and it has the backyard you wanted for Baxter. 🐕</p>
+                                            <p>I know you're usually free after 4pm. Want me to schedule a showing for tomorrow at 4:30?</p>
+                                            <p class="text-navy-400">— Sarah</p>
+                                        </div>
+
+                                        <!-- Action badges showing integrations -->
+                                        <div class="flex flex-wrap gap-2 pt-4 border-t border-navy-700/50">
+                                            <span class="inline-flex items-center gap-1.5 text-xs bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-full">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                                Pulled from CRM memory
+                                            </span>
+                                            <span class="inline-flex items-center gap-1.5 text-xs bg-blue-500/20 text-blue-300 px-2.5 py-1 rounded-full">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                                Checked your calendar
+                                            </span>
+                                            <span class="inline-flex items-center gap-1.5 text-xs bg-purple-500/20 text-purple-300 px-2.5 py-1 rounded-full">
+                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                                Matched MLS criteria
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Problem Section -->
-        <section class="py-20 px-4 md:px-8 lg:px-16 bg-white">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center">
-                    <h2 class="text-3xl md:text-4xl font-bold font-heading text-secondary-900">Still Chasing Leads at 11pm?</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-lg">You're losing business in the hours you're not working.</p>
+        <!-- The Problem (Why Alternatives Suck) -->
+        <section class="py-24 md:py-32 bg-white">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-navy-900 text-balance">
+                        Your current options suck
+                    </h2>
+                    <p class="mt-4 text-lg text-navy-600">
+                        You've tried these. They don't work.
+                    </p>
                 </div>
-                <div class="mt-12 grid gap-8 md:grid-cols-3">
-                    <div class="p-8 bg-primary-50 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                        <h3 class="text-xl font-bold font-heading text-secondary-900">Slow Follow-Up Loses Deals</h3>
-                        <p class="mt-2 text-secondary-800">Respond in 5 minutes or lose them forever. Your Spark assistant responds in under 60 seconds, 24/7.</p>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Human VA -->
+                    <div class="bg-navy-50 rounded-3xl p-8 relative overflow-hidden">
+                        <div class="absolute top-4 right-4 bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded-full">EXPENSIVE</div>
+                        <div class="w-12 h-12 bg-navy-200 rounded-2xl flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-navy-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-heading font-bold text-navy-900 mb-3">Human VAs</h3>
+                        <p class="text-3xl font-heading font-bold text-navy-900 mb-2">$1,500–3,500<span class="text-lg text-navy-500">/mo</span></p>
+                        <ul class="space-y-2 text-navy-600">
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                Only works 8 hours a day
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                Takes vacations, gets sick
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                Training takes months
+                            </li>
+                        </ul>
                     </div>
-                    <div class="p-8 bg-primary-50 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                        <h3 class="text-xl font-bold font-heading text-secondary-900">Human VAs Cost a Fortune</h3>
-                        <p class="mt-2 text-secondary-800">$1,500-3,500/month for quality help that still only works 8 hours a day. Our assistants start at $299/month.</p>
+
+                    <!-- Chatbots -->
+                    <div class="bg-navy-50 rounded-3xl p-8 relative overflow-hidden">
+                        <div class="absolute top-4 right-4 bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded-full">FRUSTRATING</div>
+                        <div class="w-12 h-12 bg-navy-200 rounded-2xl flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-navy-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-heading font-bold text-navy-900 mb-3">Chatbots</h3>
+                        <p class="text-navy-600 mb-4">You know the ones. Everyone hates them.</p>
+                        <ul class="space-y-2 text-navy-600">
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                No memory — forgets everything
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                Rigid scripts, robotic replies
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                Stuck in a website widget
+                            </li>
+                        </ul>
                     </div>
-                    <div class="p-8 bg-primary-50 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                        <h3 class="text-xl font-bold font-heading text-secondary-900">Chatbots Feel Like Chatbots</h3>
-                        <p class="mt-2 text-secondary-800">Scripted responses. No memory. No personality. They frustrate users and require constant maintenance.</p>
+
+                    <!-- Doing It Yourself -->
+                    <div class="bg-navy-50 rounded-3xl p-8 relative overflow-hidden">
+                        <div class="absolute top-4 right-4 bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded-full">BURNOUT</div>
+                        <div class="w-12 h-12 bg-navy-200 rounded-2xl flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-navy-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-heading font-bold text-navy-900 mb-3">Doing It Yourself</h3>
+                        <p class="text-navy-600 mb-4">The "I'll just reply when I can" approach.</p>
+                        <ul class="space-y-2 text-navy-600">
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                Leads go cold in 5 minutes
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                CRM never gets updated
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                You're glued to your phone 24/7
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </section>
         
-        <!-- Solution Section -->
-        <section class="py-20 px-4 md:px-8 lg:px-16">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center">
-                    <h2 class="text-3xl md:text-4xl font-bold font-heading text-secondary-900">Not a Chatbot. An Actual Assistant.</h2>
-                    <p class="mt-4 max-w-2xl mx-auto text-lg">We've built the AI assistant you've always wanted.</p>
+        <!-- What Makes Spark Different -->
+        <section class="py-24 md:py-32 relative overflow-hidden">
+            <div class="absolute inset-0 grid-pattern opacity-50"></div>
+            
+            <div class="relative max-w-6xl mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-navy-900 text-balance">
+                        Spark is <span class="gradient-text">actually different</span>
+                    </h2>
+                    <p class="mt-4 text-lg text-navy-600">
+                        Not another chatbot. An extension of you.
+                    </p>
                 </div>
-                <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    <!-- Feature 1 -->
-                    <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                        <h3 class="text-lg font-bold font-heading text-secondary-900">Real Memory</h3>
-                        <p class="mt-2 text-secondary-800">Remembers every conversation, just like a human, for seamless follow-up.</p>
+
+                <!-- The 4 Key Differentiators - Big, bold, undeniable -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Real Memory -->
+                    <div class="group bg-white rounded-3xl p-8 glow-soft card-hover border-2 border-transparent hover:border-spark-200">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-gradient-to-br from-spark-400 to-spark-600 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-heading font-bold text-navy-900 mb-2">Real Memory</h3>
+                                <p class="text-navy-600 leading-relaxed">Remembers every conversation, every preference, every detail. Picks up where you left off — even months later. <span class="text-spark-600 font-medium">"You mentioned you have a dog named Baxter and need a fenced yard..."</span></p>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Feature 2 -->
-                    <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                        <h3 class="text-lg font-bold font-heading text-secondary-900">Own Email Address</h3>
-                        <p class="mt-2 text-secondary-800">Gets a real email at your domain (e.g., assistant@yourbiz.com).</p>
+
+                    <!-- Real Personality -->
+                    <div class="group bg-white rounded-3xl p-8 glow-soft card-hover border-2 border-transparent hover:border-spark-200">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-gradient-to-br from-violet-400 to-violet-600 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-heading font-bold text-navy-900 mb-2">Real Personality</h3>
+                                <p class="text-navy-600 leading-relaxed">Matches YOUR voice. Professional or casual. Warm or direct. We tailor it to your brand. <span class="text-spark-600 font-medium">87% of beta testers thought they were talking to a human.</span></p>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Feature 3 -->
-                    <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                        <h3 class="text-lg font-bold font-heading text-secondary-900">Available 24/7</h3>
-                        <p class="mt-2 text-secondary-800">Never takes a day off, never sleeps. Always ready to engage a new lead.</p>
+
+                    <!-- Real Email -->
+                    <div class="group bg-white rounded-3xl p-8 glow-soft card-hover border-2 border-transparent hover:border-spark-200">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-heading font-bold text-navy-900 mb-2">Real Email Address</h3>
+                                <p class="text-navy-600 leading-relaxed">Not a widget. Not a chat bubble. A real email at YOUR domain: <span class="font-mono text-spark-600 font-medium">assistant@yourbusiness.com</span>. Professional, seamless, natural.</p>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Feature 4 -->
-                    <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                        <h3 class="text-lg font-bold font-heading text-secondary-900">Real Personality</h3>
-                        <p class="mt-2 text-secondary-800">Not robotic or scripted. We tailor the personality to match your brand voice.</p>
+
+                    <!-- Real Integrations -->
+                    <div class="group bg-white rounded-3xl p-8 glow-soft card-hover border-2 border-transparent hover:border-spark-200">
+                        <div class="flex items-start gap-5">
+                            <div class="w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-heading font-bold text-navy-900 mb-2">Real Integrations</h3>
+                                <p class="text-navy-600 leading-relaxed">CRM gets updated automatically. Calendar gets checked and booked. Follow-ups get scheduled. <span class="text-spark-600 font-medium">No more data entry. No more "I forgot to log that."</span></p>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Feature 5 -->
-                    <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                        <h3 class="text-lg font-bold font-heading text-secondary-900">Full Integrations</h3>
-                        <p class="mt-2 text-secondary-800">Connects to your CRM, calendar, email, and other essential tools.</p>
-                    </div>
-                    <!-- Feature 6 -->
-                    <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                        <h3 class="text-lg font-bold font-heading text-secondary-900">Indistinguishable</h3>
-                        <p class="mt-2 text-secondary-800">87% of leads thought they were talking to a human in our beta tests.</p>
-                    </div>
+                </div>
+
+                <!-- The Result -->
+                <div class="mt-12 bg-gradient-to-br from-navy-900 to-navy-950 rounded-3xl p-8 md:p-12 text-center">
+                    <p class="text-spark-400 font-semibold mb-3">The result?</p>
+                    <h3 class="text-2xl md:text-3xl font-heading font-bold text-white mb-4">
+                        An assistant that feels like an extension of you
+                    </h3>
+                    <p class="text-navy-300 max-w-2xl mx-auto">
+                        Not a robot. Not a replacement. A clone that handles the tedious stuff so you can focus on what actually matters — closing deals and building relationships.
+                    </p>
                 </div>
             </div>
         </section>
 
-        <!-- How It Works Section -->
-        <section class="py-20 px-4 md:px-8 lg:px-16 bg-white">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center">
-                    <h2 class="text-3xl md:text-4xl font-bold font-heading text-secondary-900">Up and Running in 24 Hours</h2>
+        <!-- How It Works -->
+        <section id="how-it-works" class="py-24 md:py-32 section-dark relative overflow-hidden">
+            <div class="absolute top-0 left-1/4 w-96 h-96 bg-spark-500/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-spark-500/10 rounded-full blur-3xl"></div>
+            
+            <div class="relative max-w-6xl mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white text-balance">
+                        Live in <span class="text-spark-400">24 hours</span>
+                    </h2>
+                    <p class="mt-4 text-lg text-navy-300">
+                        No technical setup. No months of training. We handle everything.
+                    </p>
                 </div>
-                <div class="mt-12 grid md:grid-cols-3 gap-12 text-center">
-                    <div>
-                        <div class="text-4xl font-bold font-heading text-primary-500">1.</div>
-                        <h3 class="mt-4 text-xl font-bold font-heading">Tell Us About Your Business</h3>
-                        <p class="mt-2 text-secondary-800">A 30-minute onboarding call is all we need to understand your goals, brand voice, and workflows.</p>
-                    </div>
-                    <div>
-                        <div class="text-4xl font-bold font-heading text-primary-500">2.</div>
-                        <h3 class="mt-4 text-xl font-bold font-heading">We Build Your Assistant</h3>
-                        <p class="mt-2 text-secondary-800">We create a custom personality, set up integrations, and define the exact workflows you need.</p>
-                    </div>
-                    <div>
-                        <div class="text-4xl font-bold font-heading text-primary-500">3.</div>
-                        <h3 class="mt-4 text-xl font-bold font-heading">Start Delegating</h3>
-                        <p class="mt-2 text-secondary-800">Your new assistant starts handling leads, scheduling meetings, and updating your CRM while you sleep.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Pricing Section -->
-        <section id="pricing" class="py-20 px-4 md:px-8 lg:px-16">
-            <div class="max-w-7xl mx-auto text-center">
-                <h2 class="text-3xl md:text-4xl font-bold font-heading text-secondary-900">Simple, Transparent Pricing</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-lg">One plan, everything you need.</p>
-                <div class="mt-12 max-w-md mx-auto bg-white rounded-xl shadow-lg p-10 border border-primary-100">
-                    <h3 class="text-2xl font-bold font-heading">Spark Assistant</h3>
-                    <p class="mt-4 text-5xl font-extrabold font-heading text-secondary-900">$299<span class="text-lg font-medium text-gray-500">/month</span></p>
-                    <p class="mt-4 text-gray-600">No hidden fees. No long-term contracts.</p>
-                    <ul class="mt-8 space-y-4 text-left">
-                        <li class="flex items-center">
-                            <svg class="h-6 w-6 text-primary-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                            24/7 Availability
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="h-6 w-6 text-primary-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                            Dedicated Email Address
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="h-6 w-6 text-primary-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                            CRM & Calendar Integration
-                        </li>
-                         <li class="flex items-center">
-                            <svg class="h-6 w-6 text-primary-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                            Custom Personality & Workflows
-                        </li>
-                    </ul>
-                    <a href="#" class="mt-10 block w-full bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">Get Started</a>
-                </div>
-            </div>
-        </section>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="relative">
+                        <div class="hidden md:block absolute top-12 left-full w-full h-px bg-gradient-to-r from-spark-500/50 to-transparent -translate-x-8"></div>
+                        <div class="bg-navy-800/50 backdrop-blur rounded-2xl p-8 border border-navy-700/50 h-full">
+                            <div class="w-14 h-14 bg-gradient-to-br from-spark-400 to-spark-600 rounded-2xl flex items-center justify-center text-white text-2xl font-heading font-bold mb-6">1</div>
+                            <h3 class="text-xl font-heading font-bold text-white mb-3">30-minute call</h3>
+                            <p class="text-navy-300 leading-relaxed">Tell us about your business, your voice, your workflows. That's all we need.</p>
+                        </div>
+                    </div>
 
-        <!-- FAQ Section -->
-        <section class="py-20 px-4 md:px-8 lg:px-16 bg-white">
-            <div class="max-w-7xl mx-auto">
-                <div class="text-center">
-                    <h2 class="text-3xl md:text-4xl font-bold font-heading text-secondary-900">Questions? We've Got Answers.</h2>
-                </div>
-                <div class="mt-12 max-w-3xl mx-auto space-y-4">
-                    <div x-data="{ open: false }" class="bg-primary-50 rounded-lg">
-                        <button @click="open = !open" class="w-full flex justify-between items-center text-left p-6">
-                            <span class="text-lg font-semibold font-heading text-secondary-900">Is it really AI or a human?</span>
-                            <svg class="h-6 w-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                        </button>
-                        <div x-show="open" x-collapse class="p-6 pt-0">
-                            <p class="text-secondary-800">It's 100% AI, but it's designed to be completely indistinguishable from a human assistant. It has memory, a custom personality, and can handle complex, multi-step conversations.</p>
+                    <div class="relative">
+                        <div class="hidden md:block absolute top-12 left-full w-full h-px bg-gradient-to-r from-spark-500/50 to-transparent -translate-x-8"></div>
+                        <div class="bg-navy-800/50 backdrop-blur rounded-2xl p-8 border border-navy-700/50 h-full">
+                            <div class="w-14 h-14 bg-gradient-to-br from-spark-400 to-spark-600 rounded-2xl flex items-center justify-center text-white text-2xl font-heading font-bold mb-6">2</div>
+                            <h3 class="text-xl font-heading font-bold text-white mb-3">We build it</h3>
+                            <p class="text-navy-300 leading-relaxed">We create your assistant's personality, connect your tools, and set up your email address.</p>
                         </div>
                     </div>
-                    <div x-data="{ open: false }" class="bg-primary-50 rounded-lg">
-                        <button @click="open = !open" class="w-full flex justify-between items-center text-left p-6">
-                            <span class="text-lg font-semibold font-heading text-secondary-900">How is this different from a chatbot?</span>
-                             <svg class="h-6 w-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                        </button>
-                        <div x-show="open" x-collapse class="p-6 pt-0">
-                            <p class="text-secondary-800">Chatbots are based on rigid scripts and decision trees. Our assistants are powered by advanced AI that can understand context, remember past interactions, and make intelligent decisions. Plus, they operate from a real email address, not a website widget.</p>
-                        </div>
-                    </div>
-                     <div x-data="{ open: false }" class="bg-primary-50 rounded-lg">
-                        <button @click="open = !open" class="w-full flex justify-between items-center text-left p-6">
-                            <span class="text-lg font-semibold font-heading text-secondary-900">What if my clients realize it's AI?</span>
-                             <svg class="h-6 w-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                        </button>
-                        <div x-show="open" x-collapse class="p-6 pt-0">
-                            <p class="text-secondary-800">In our extensive testing, 87% of people believed they were interacting with a human. The experience is designed to be so seamless and natural that it's a non-issue. The goal is efficiency and great service, and that's what clients experience.</p>
-                        </div>
-                    </div>
-                    <div x-data="{ open: false }" class="bg-primary-50 rounded-lg">
-                        <button @click="open = !open" class="w-full flex justify-between items-center text-left p-6">
-                            <span class="text-lg font-semibold font-heading text-secondary-900">How long to get started?</span>
-                             <svg class="h-6 w-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                        </button>
-                        <div x-show="open" x-collapse class="p-6 pt-0">
-                            <p class="text-secondary-800">Typically between 24-48 hours. After our 30-minute onboarding call, our team gets to work building and testing your assistant. We'll notify you the moment it's ready to go live.</p>
-                        </div>
-                    </div>
-                     <div x-data="{ open: false }" class="bg-primary-50 rounded-lg">
-                        <button @click="open = !open" class="w-full flex justify-between items-center text-left p-6">
-                            <span class="text-lg font-semibold font-heading text-secondary-900">Can I customize the personality?</span>
-                             <svg class="h-6 w-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                        </button>
-                        <div x-show="open" x-collapse class="p-6 pt-0">
-                            <p class="text-secondary-800">Yes, completely. During onboarding, we'll define the exact tone you're looking for—whether it's professional and concise, friendly and bubbly, or somewhere in between. We match it to your brand.</p>
-                        </div>
-                    </div>
-                     <div x-data="{ open: false }" class="bg-primary-50 rounded-lg">
-                        <button @click="open = !open" class="w-full flex justify-between items-center text-left p-6">
-                            <span class="text-lg font-semibold font-heading text-secondary-900">What happens if something goes wrong?</span>
-                             <svg class="h-6 w-6 transform transition-transform" :class="{ 'rotate-180': open }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                        </button>
-                        <div x-show="open" x-collapse class="p-6 pt-0">
-                            <p class="text-secondary-800">We have robust human escalation protocols. If the assistant is ever confused or encounters a request outside its scope, it will immediately loop in a designated human team member to take over the conversation seamlessly.</p>
+
+                    <div class="relative">
+                        <div class="bg-navy-800/50 backdrop-blur rounded-2xl p-8 border border-navy-700/50 h-full">
+                            <div class="w-14 h-14 bg-gradient-to-br from-spark-400 to-spark-600 rounded-2xl flex items-center justify-center text-white text-2xl font-heading font-bold mb-6">3</div>
+                            <h3 class="text-xl font-heading font-bold text-white mb-3">Start delegating</h3>
+                            <p class="text-navy-300 leading-relaxed">Your clone starts working. Leads get handled. CRM gets updated. You sleep better.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Final CTA Section -->
-        <section id="contact" class="py-20 px-4 md:px-8 lg:px-16">
-            <div class="max-w-7xl mx-auto text-center">
-                 <h2 class="text-3xl md:text-4xl font-bold font-heading text-secondary-900">Ready to Stop Missing Leads?</h2>
-                 <p class="mt-4 max-w-2xl mx-auto text-lg">Your AI assistant is one call away.</p>
-                 <div class="mt-8">
-                     <a href="#" class="bg-primary-500 hover:bg-primary-600 text-white px-10 py-5 rounded-lg font-semibold text-lg transition-colors">Get Started Today</a>
-                 </div>
+        <!-- Pricing -->
+        <section id="pricing" class="py-24 md:py-32 bg-white relative overflow-hidden">
+            <div class="absolute inset-0 grid-pattern opacity-30"></div>
+            
+            <div class="relative max-w-6xl mx-auto px-6">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-navy-900 text-balance">
+                        Less than a cup of coffee a day
+                    </h2>
+                    <p class="mt-4 text-lg text-navy-600">
+                        For an assistant that works 24/7/365.
+                    </p>
+                </div>
+
+                <div class="max-w-lg mx-auto">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-gradient-to-r from-spark-500/20 via-spark-400/20 to-spark-500/20 rounded-3xl blur-2xl"></div>
+                        
+                        <div class="relative bg-white rounded-3xl p-8 md:p-10 border-2 border-spark-200 shadow-xl">
+                            <div class="text-center">
+                                <h3 class="text-2xl font-heading font-bold text-navy-900">Spark Assistant</h3>
+                                <div class="mt-6">
+                                    <span class="text-6xl font-heading font-extrabold text-navy-900">$299</span>
+                                    <span class="text-navy-500 text-lg">/month</span>
+                                </div>
+                                <p class="mt-2 text-navy-500">Cancel anytime. No contracts.</p>
+                            </div>
+
+                            <div class="mt-8 space-y-4">
+                                <div class="flex items-start gap-3">
+                                    <div class="flex-shrink-0 w-6 h-6 bg-spark-100 rounded-full flex items-center justify-center mt-0.5">
+                                        <svg class="w-4 h-4 text-spark-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    </div>
+                                    <span class="text-navy-700"><strong>24/7/365</strong> — never sleeps, never takes vacation</span>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <div class="flex-shrink-0 w-6 h-6 bg-spark-100 rounded-full flex items-center justify-center mt-0.5">
+                                        <svg class="w-4 h-4 text-spark-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    </div>
+                                    <span class="text-navy-700"><strong>Real email</strong> at your domain</span>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <div class="flex-shrink-0 w-6 h-6 bg-spark-100 rounded-full flex items-center justify-center mt-0.5">
+                                        <svg class="w-4 h-4 text-spark-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    </div>
+                                    <span class="text-navy-700"><strong>Full memory</strong> of every conversation</span>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <div class="flex-shrink-0 w-6 h-6 bg-spark-100 rounded-full flex items-center justify-center mt-0.5">
+                                        <svg class="w-4 h-4 text-spark-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    </div>
+                                    <span class="text-navy-700"><strong>Custom personality</strong> matching your brand</span>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <div class="flex-shrink-0 w-6 h-6 bg-spark-100 rounded-full flex items-center justify-center mt-0.5">
+                                        <svg class="w-4 h-4 text-spark-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    </div>
+                                    <span class="text-navy-700"><strong>CRM + calendar</strong> integration</span>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <div class="flex-shrink-0 w-6 h-6 bg-spark-100 rounded-full flex items-center justify-center mt-0.5">
+                                        <svg class="w-4 h-4 text-spark-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                    </div>
+                                    <span class="text-navy-700"><strong>Human escalation</strong> when needed</span>
+                                </div>
+                            </div>
+
+                            <a href="#contact" class="mt-8 w-full inline-flex items-center justify-center gap-2 bg-spark-500 hover:bg-spark-600 text-white font-semibold py-4 rounded-xl transition-all hover:shadow-xl hover:shadow-spark-500/25">
+                                Get started
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Comparison -->
+                    <div class="mt-8 text-center">
+                        <p class="text-navy-600 text-sm">
+                            That's <strong class="text-navy-900">10-12x cheaper</strong> than a human VA. And it works 3x the hours.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ - Only questions that matter -->
+        <section class="py-24 md:py-32">
+            <div class="max-w-3xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-heading font-bold text-navy-900">
+                        Quick answers
+                    </h2>
+                </div>
+
+                <div class="space-y-4" x-data="{ active: null }">
+                    <div class="bg-white rounded-2xl border border-navy-100 overflow-hidden">
+                        <button @click="active = active === 1 ? null : 1" class="w-full flex justify-between items-center text-left p-6 gap-4">
+                            <span class="text-lg font-semibold text-navy-900">"Wait, is this AI or a human?"</span>
+                            <svg class="w-5 h-5 text-navy-400 transform transition-transform flex-shrink-0" :class="{ 'rotate-180': active === 1 }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div x-show="active === 1" x-collapse>
+                            <div class="px-6 pb-6 text-navy-600">
+                                100% AI. But that's the point — it's designed to be indistinguishable from a great human assistant. Real memory. Real personality. In our beta, 87% of people thought they were talking to a person.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-navy-100 overflow-hidden">
+                        <button @click="active = active === 2 ? null : 2" class="w-full flex justify-between items-center text-left p-6 gap-4">
+                            <span class="text-lg font-semibold text-navy-900">"How is this different from [insert chatbot]?"</span>
+                            <svg class="w-5 h-5 text-navy-400 transform transition-transform flex-shrink-0" :class="{ 'rotate-180': active === 2 }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div x-show="active === 2" x-collapse>
+                            <div class="px-6 pb-6 text-navy-600">
+                                Chatbots: rigid scripts, no memory, stuck in a widget, obviously robotic. Spark: real memory of past conversations, personality that matches your brand, operates from a real email address, and actually follows up on its own. Completely different category.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-navy-100 overflow-hidden">
+                        <button @click="active = active === 3 ? null : 3" class="w-full flex justify-between items-center text-left p-6 gap-4">
+                            <span class="text-lg font-semibold text-navy-900">"What if it screws up?"</span>
+                            <svg class="w-5 h-5 text-navy-400 transform transition-transform flex-shrink-0" :class="{ 'rotate-180': active === 3 }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div x-show="active === 3" x-collapse>
+                            <div class="px-6 pb-6 text-navy-600">
+                                Built-in human escalation. If your assistant is ever unsure or encounters something outside its scope, it immediately loops in you or your designated team member. Seamlessly, no awkwardness.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-navy-100 overflow-hidden">
+                        <button @click="active = active === 4 ? null : 4" class="w-full flex justify-between items-center text-left p-6 gap-4">
+                            <span class="text-lg font-semibold text-navy-900">"How fast can I get started?"</span>
+                            <svg class="w-5 h-5 text-navy-400 transform transition-transform flex-shrink-0" :class="{ 'rotate-180': active === 4 }" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div x-show="active === 4" x-collapse>
+                            <div class="px-6 pb-6 text-navy-600">
+                                24-48 hours. One 30-minute onboarding call, then we build and test your assistant. You get notified when it's live. No technical work on your end.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Waitlist / Contact Form -->
+        <section id="contact" class="py-24 md:py-32 section-dark relative overflow-hidden">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNiIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDMpIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9zdmc+')] opacity-50"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-spark-500/20 rounded-full blur-3xl"></div>
+            
+            <div class="relative max-w-2xl mx-auto px-6">
+                <div class="text-center mb-10">
+                    <div class="inline-flex items-center gap-2 bg-spark-500/20 backdrop-blur rounded-full px-4 py-1.5 mb-6">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-spark-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-spark-400"></span>
+                        </span>
+                        <span class="text-sm font-medium text-spark-300">Now accepting early access</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold text-white text-balance">
+                        Ready to clone yourself?
+                    </h2>
+                    <p class="mt-4 text-lg text-navy-300 max-w-xl mx-auto">
+                        Join the waitlist. We'll reach out to schedule your 30-minute onboarding call.
+                    </p>
+                </div>
+                
+                <!-- Waitlist Form -->
+                <form 
+                    action="https://formspree.io/f/xyzzzzzz" 
+                    method="POST" 
+                    class="bg-navy-800/50 backdrop-blur-sm rounded-3xl p-8 md:p-10 border border-navy-700/50"
+                    x-data="{ submitted: false }"
+                    @submit.prevent="
+                        fetch($el.action, { method: 'POST', body: new FormData($el), headers: { 'Accept': 'application/json' } })
+                        .then(r => { if(r.ok) submitted = true; })
+                        .catch(e => console.error(e));
+                    "
+                >
+                    <!-- Success Message -->
+                    <div x-show="submitted" x-cloak class="text-center py-8">
+                        <div class="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <h3 class="text-xl font-heading font-bold text-white mb-2">You're on the list!</h3>
+                        <p class="text-navy-300">We'll be in touch soon to schedule your onboarding call.</p>
+                    </div>
+                    
+                    <!-- Form Fields -->
+                    <div x-show="!submitted" class="space-y-5">
+                        <div class="grid sm:grid-cols-2 gap-5">
+                            <!-- Name -->
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-navy-300 mb-2">Name <span class="text-spark-400">*</span></label>
+                                <input 
+                                    type="text" 
+                                    id="name"
+                                    name="name" 
+                                    required
+                                    placeholder="Your name"
+                                    class="w-full px-4 py-3 rounded-xl bg-navy-900/80 border border-navy-600/50 text-white placeholder-navy-400 focus:outline-none focus:ring-2 focus:ring-spark-500/50 focus:border-spark-500 transition-all"
+                                >
+                            </div>
+                            <!-- Email -->
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-navy-300 mb-2">Email <span class="text-spark-400">*</span></label>
+                                <input 
+                                    type="email" 
+                                    id="email"
+                                    name="email" 
+                                    required
+                                    placeholder="you@company.com"
+                                    class="w-full px-4 py-3 rounded-xl bg-navy-900/80 border border-navy-600/50 text-white placeholder-navy-400 focus:outline-none focus:ring-2 focus:ring-spark-500/50 focus:border-spark-500 transition-all"
+                                >
+                            </div>
+                        </div>
+                        
+                        <!-- Company (Optional) -->
+                        <div>
+                            <label for="company" class="block text-sm font-medium text-navy-300 mb-2">Company <span class="text-navy-500">(optional)</span></label>
+                            <input 
+                                type="text" 
+                                id="company"
+                                name="company" 
+                                placeholder="Your company or brokerage"
+                                class="w-full px-4 py-3 rounded-xl bg-navy-900/80 border border-navy-600/50 text-white placeholder-navy-400 focus:outline-none focus:ring-2 focus:ring-spark-500/50 focus:border-spark-500 transition-all"
+                            >
+                        </div>
+                        
+                        <!-- Message (Optional) -->
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-navy-300 mb-2">Message <span class="text-navy-500">(optional)</span></label>
+                            <textarea 
+                                id="message"
+                                name="message" 
+                                rows="3"
+                                placeholder="Tell us about your business and what you're looking for..."
+                                class="w-full px-4 py-3 rounded-xl bg-navy-900/80 border border-navy-600/50 text-white placeholder-navy-400 focus:outline-none focus:ring-2 focus:ring-spark-500/50 focus:border-spark-500 transition-all resize-none"
+                            ></textarea>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button 
+                            type="submit" 
+                            class="w-full py-4 bg-spark-500 hover:bg-spark-400 text-white font-semibold rounded-xl transition-all hover:shadow-xl hover:shadow-spark-500/25 flex items-center justify-center gap-2 group"
+                        >
+                            Join the Waitlist
+                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        </button>
+                        
+                        <p class="text-center text-sm text-navy-400">
+                            No spam, ever. We'll just reach out to schedule a quick call.
+                        </p>
+                    </div>
+                </form>
             </div>
         </section>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-secondary-900 text-white">
-        <div class="max-w-7xl mx-auto py-12 px-4 md:px-8 lg:px-16">
-            <div class="md:flex md:justify-between">
-                <div class="mb-6 md:mb-0">
-                     <a href="index.html" class="text-2xl font-heading font-bold">✨ Build with Spark</a>
-                     <p class="mt-2 text-secondary-100">AI assistants that actually work.</p>
+    <footer class="bg-navy-950 border-t border-navy-800">
+        <div class="max-w-6xl mx-auto px-6 py-12">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+                <div>
+                    <a href="index.html" class="flex items-center gap-2">
+                        <span class="text-2xl">✨</span>
+                        <span class="text-xl font-heading font-bold text-white">Spark</span>
+                    </a>
+                    <p class="mt-2 text-navy-400">Clone yourself with AI.</p>
                 </div>
-                <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
-                    <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-400 uppercase">Company</h2>
-                        <ul class="text-gray-300">
-                            <li class="mb-4"><a href="index.html" class="hover:underline">Home</a></li>
-                            <li><a href="realestate.html" class="hover:underline">Real Estate</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h2 class="mb-6 text-sm font-semibold text-gray-400 uppercase">Resources</h2>
-                        <ul class="text-gray-300">
-                            <li class="mb-4"><a href="#pricing" class="hover:underline">Pricing</a></li>
-                            <li><a href="#contact" class="hover:underline">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
+
+                <nav class="flex flex-wrap gap-x-8 gap-y-4 text-sm">
+                    <a href="#how-it-works" class="text-navy-400 hover:text-white transition-colors">How It Works</a>
+                    <a href="#pricing" class="text-navy-400 hover:text-white transition-colors">Pricing</a>
+                    <a href="realestate.html" class="text-navy-400 hover:text-white transition-colors">Real Estate</a>
+                    <a href="#contact" class="text-navy-400 hover:text-white transition-colors">Contact</a>
+                </nav>
             </div>
-            <hr class="my-6 border-gray-700 sm:mx-auto lg:my-8" />
-            <div class="text-center text-gray-400">
-                <p>&copy; 2026 Build with Spark. All Rights Reserved.</p>
+
+            <div class="mt-12 pt-8 border-t border-navy-800 text-sm text-navy-500">
+                <p>&copy; 2026 Build with Spark. All rights reserved.</p>
             </div>
         </div>
     </footer>
